@@ -1,3 +1,7 @@
+import "./globals.css";
+import Navbar from "@/components/sections/Navbar"; // Import our new Navbar
+import Cursor from "@/components/ui/Cursor";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -5,7 +9,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col bg-black cursor-none">
+        <Cursor />
+        <Navbar /> {/* Place it here */}
+        {children}
+      </body>
     </html>
   );
 }
