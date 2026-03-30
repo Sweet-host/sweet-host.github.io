@@ -17,7 +17,7 @@ export default function Home() {
         </Reveal>
 
         <Reveal delay={0.4}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-11">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-11 w-full place-items-center">
             <ProjectCard
               tag="Web Design"
               title="NEON PULSE"

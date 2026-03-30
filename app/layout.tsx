@@ -9,7 +9,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col bg-black cursor-none">
+      <body className="min-h-full flex flex-col bg-black cursor-none overflow-x-hidden">
         <Cursor />
         <Navbar /> {/* Place it here */}
         {children}

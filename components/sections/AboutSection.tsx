@@ -3,24 +3,43 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import React, { useRef, useState, useEffect } from "react";
 
+const roles = ["DEVELOPER", "DESIGNER", "ADVISOR", "CONSULTANT"];
+
 const AboutSection = () => {
   const containerRef = useRef(null);
-
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   });
 
-  // 1. Logic Area (Hooks)
-  const laserX = useTransform(scrollYProgress, [0.3, 0.6], ["0%", "100%"]);
-  const quoteY = useTransform(scrollYProgress, [0, 1], [0, -150]);
+  // 1. Create a state to hold the timing array (default to desktop)
+  const [scrollRange, setScrollRange] = useState([0.28, 0.5]);
+
+  // 2. Check the screen size when the component loads and if it resizes
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setScrollRange([0.15, 0.4]); // Mobile: Hurry up
+      } else {
+        setScrollRange([0.28, 0.5]); // Desktop: Take your time
+      }
+    };
+
+    handleResize(); // Run once immediately
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // 3. The Master Tracker now uses the dynamic 'scrollRange'
+  const scanProgress = useTransform(scrollYProgress, scrollRange, [0, 100]);
+  const laserX = useTransform(scanProgress, (val) => `${val}%`);
   const clipPath = useTransform(
-    scrollYProgress,
-    [0.3, 0.6],
-    ["inset(0 100% 0 0)", "inset(0 0% 0 0)"],
+    scanProgress,
+    (val) => `inset(0 ${100 - val}% 0 0)`,
   );
 
-  const roles = ["DEVELOPER", "DESIGNER", "ADVISOR", "CONSULTANT"];
+  const quoteY = useTransform(scrollYProgress, [0, 1], [0, -150]);
+
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -52,10 +71,11 @@ const AboutSection = () => {
         />
 
         {/* 3. The Revealed Content (ClipPath Wrapper) */}
-        <motion.div style={{ clipPath }} className="relative z-20">
+        <motion.div style={{ clipPath }} className="relative z-20 w-full">
           {/* PERSONA FLIPPER HEADLINE */}
-          <h2 className="text-6xl md:text-8xl font-black text-white tracking-tighter leading-none mb-12">
-            I AM A <br />
+          {/* Scaled down to text-5xl for mobile, md:text-7xl for tablet, lg:text-8xl for desktop */}
+          <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-none mb-8 md:mb-12">
+            REI IS A <br />
             <div className="h-[1.1em] overflow-hidden relative inline-block align-bottom">
               <motion.div
                 key={index}
@@ -71,7 +91,7 @@ const AboutSection = () => {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <p className="text-xl md:text-2xl text-gray-400 font-medium leading-relaxed">
+            <p className="text-lg md:text-2xl text-gray-400 font-medium leading-relaxed">
               I am a developer who believes the web {"shouldn't"} be flat. By
               merging <span className="text-white">3D motion</span> with clean
               code, I build digital experiences that feel physical, responsive,
