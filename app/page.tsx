@@ -8,8 +8,11 @@ export default function Home() {
   return (
     <main className="relative bg-black">
       <HeroSection />
-      {/* Project Grid Section */}
-      <section className="py-24 px-6 max-w-5xl mx-auto">
+      {/* Project Grid Section — anchor for navbar "Work" */}
+      <section
+        id="work"
+        className="scroll-mt-28 md:scroll-mt-32 py-24 px-6 max-w-5xl mx-auto"
+      >
         <Reveal>
           <h2 className="text-white text-5xl font-black mb-12 tracking-tighter">
             FEATURED <span className="text-electric-blue">WORKS</span>

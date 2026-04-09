@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import Image from "next/image"; // Import the specialized component
+import Image from "next/image";
 import React from "react";
 
 interface Props {
@@ -25,16 +25,18 @@ const ProjectCard = ({ title, description, tag, image }: Props) => {
   const shineX = useTransform(mouseXSpring, [-0.5, 0.5], ["0%", "100%"]);
   const shineY = useTransform(mouseYSpring, [-0.5, 0.5], ["0%", "100%"]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  // Upgraded to PointerEvent to instantly catch both mouse and mobile touch
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
+
     x.set((e.clientX - rect.left) / width - 0.5);
     y.set((e.clientY - rect.top) / height - 0.5);
     opacity.set(1);
   };
 
-  const handleMouseLeave = () => {
+  const handlePointerLeave = () => {
     x.set(0);
     y.set(0);
     opacity.set(0);
@@ -42,12 +44,15 @@ const ProjectCard = ({ title, description, tag, image }: Props) => {
 
   return (
     <motion.div
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      onPointerDown={handlePointerMove} // Instantly triggers on mobile touch
+      onPointerMove={handlePointerMove} // Handles desktop mouse movement and finger dragging
+      onPointerUp={handlePointerLeave} // Clears effect when finger lifts
+      onPointerLeave={handlePointerLeave} // Clears effect when mouse leaves
+      onPointerCancel={handlePointerLeave} // Clears effect if the touch turns into a scroll swipe
       style={{ rotateY, rotateX, transformStyle: "preserve-3d" }}
       className="relative h-[450px] w-80 rounded-4xl bg-white/5 backdrop-blur-2xl border border-white/10 cursor-pointer overflow-hidden group"
     >
-      {/* 1. THE IMAGE (Using Next.js Image Component) */}
+      {/* 1. THE IMAGE */}
       <motion.div
         style={{ transform: "translateZ(40px)", transformStyle: "preserve-3d" }}
         className="absolute inset-4 rounded-2xl overflow-hidden z-0"
@@ -56,8 +61,9 @@ const ProjectCard = ({ title, description, tag, image }: Props) => {
           src={image}
           alt={title}
           fill
-          sizes="(max-width: 768px) 100vw, 33vw" // Add this line
-          className="object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+          sizes="(max-width: 768px) 100vw, 33vw"
+          // Added md:group-hover for desktop and group-active for instant mobile response
+          className="object-cover opacity-60 md:group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-300 ease-out"
           priority={true}
         />
         <div className="absolute inset-0 bg-black/40 z-10" />
@@ -69,7 +75,7 @@ const ProjectCard = ({ title, description, tag, image }: Props) => {
           background: `radial-gradient(circle at ${shineX} ${shineY}, rgba(255,255,255,0.4) 0%, transparent 60%)`,
           opacity,
         }}
-        className="absolute inset-0 z-10 pointer-events-none"
+        className="absolute inset-0 z-10 pointer-events-none transition-opacity duration-300"
       />
 
       {/* 3. THE TEXT */}

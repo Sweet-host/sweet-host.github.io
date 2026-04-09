@@ -7,6 +7,33 @@
   --electric-blue: #3b82f6;
 }
 
+/* Smooth in-page navigation from the navbar */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/*
+  Custom cursor (fine pointers): hide the system arrow/hand so only the
+  dot + ring drawn in components/ui/Cursor.tsx appear over links.
+*/
+@media (pointer: fine) {
+  body *:not(input):not(textarea):not(select):not([contenteditable="true"]) {
+    cursor: none !important;
+  }
+
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  [contenteditable="true"] {
+    cursor: text !important;
+  }
+
+  select {
+    cursor: pointer !important;
+  }
+}
+
 @theme {
   /* Existing colors... */
   --color-electric-blue: #00f2ff;
@@ -29,4 +56,5 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }

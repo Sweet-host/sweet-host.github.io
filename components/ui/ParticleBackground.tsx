@@ -5,8 +5,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
 
-// 1. Move the random generation OUTSIDE the component.
-// This runs exactly once and makes the React linter perfectly happy.
+// 1. Random generation OUTSIDE the component (Perfect R3F Stability)
 const generateParticles = () => {
   const count = 3000;
   const pos = new Float32Array(count * 3);
@@ -29,12 +28,11 @@ function StarCloud() {
 
   useFrame((state, delta) => {
     if (ref.current) {
-      // 1. The automatic slow rotation (kept the same perfect speed)
+      // 1. The automatic slow rotation
       ref.current.rotation.x -= delta / 15;
       ref.current.rotation.y -= delta / 20;
 
-      // 2. THE NEW MOUSE INTERACTION (Parallax)
-      // This smoothly moves the cloud based on your cursor's X and Y position
+      // 2. THE MOUSE INTERACTION (Parallax)
       ref.current.position.x = THREE.MathUtils.lerp(
         ref.current.position.x,
         state.pointer.x * 0.5,
@@ -59,7 +57,7 @@ function StarCloud() {
         <PointMaterial
           transparent
           color="#00f2ff"
-          size={0.017} // Changed from 0.03 to 0.015 for a sharper, finer look
+          size={0.017}
           sizeAttenuation={true}
           depthWrite={false}
           blending={THREE.AdditiveBlending}
@@ -71,7 +69,8 @@ function StarCloud() {
 
 export default function ParticleBackground() {
   return (
-    <div className="absolute inset-0 z-0 opacity-60">
+    // CHEAT SHEET FIX: Added pointer-events-none to prevent touch-scroll blocking on mobile
+    <div className="absolute inset-0 z-0 opacity-60 pointer-events-none">
       <Canvas camera={{ position: [0, 0, 3] }}>
         <StarCloud />
       </Canvas>
