@@ -37,7 +37,7 @@ const Navbar = () => {
             <span className="text-white transition-all duration-300 ease-out group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-linear-to-r group-hover:from-fuchsia-500 group-hover:to-pink-500">
               SWEET
             </span>
-            <span className="text-blue-600">HOST</span>
+            <span className="text-blue-400">HOST</span>
           </div>
 
           {/* DESKTOP LINKS */}

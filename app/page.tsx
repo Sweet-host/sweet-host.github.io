@@ -15,7 +15,7 @@ export default function Home() {
       >
         <Reveal>
           <h2 className="text-white text-5xl font-black mb-12 tracking-tighter">
-            FEATURED <span className="text-electric-blue">WORKS</span>
+            FEATURED <span className="text-cyber-pink">WORKS</span>
           </h2>
         </Reveal>
 

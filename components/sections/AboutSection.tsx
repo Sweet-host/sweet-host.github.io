@@ -83,7 +83,7 @@ const AboutSection = () => {
         {/* 2. The Laser Beam */}
         <motion.div
           style={{ left: laserX }}
-          className="absolute top-0 bottom-0 w-[2px] bg-electric-blue shadow-[0_0_20px_rgba(0,242,255,0.8)] z-30"
+          className="absolute top-0 bottom-0 w-[2px] bg-cyber-pink shadow-[0_0_20px_rgba(0,242,255,0.8)] z-30"
         />
 
         {/* 3. The Revealed Content (ClipPath Wrapper) */}
@@ -99,7 +99,7 @@ const AboutSection = () => {
                   exit={{ y: "-100%" }}
                   transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
                   // CHEAT SHEET FIX: Added pr-2 to prevent italic right-bearing clip
-                  className="text-electric-blue italic pr-2"
+                  className="text-cyber-pink italic pr-2"
                 >
                   {roles[index]}
                 </motion.div>
